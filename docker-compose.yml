@@ -1,0 +1,41 @@
+services:
+  api-crud:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - ${PORT}:${PORT}
+    working_dir: /app
+    env_file:
+      - .env
+    depends_on:
+      db-crud:
+        condition: service_healthy
+
+  db-crud:
+    image: postgres:15.6-alpine
+    ports:
+      - '${DB_HOST_PORT}:${DB_PORT}'
+    volumes:
+      - data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_DATABASE}
+      - POSTGRES_USER=${DB_USER:-postgres}
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'pg_isready',
+          '-U',
+          '${DB_USER:-postgres}',
+          '-d',
+          '${DB_DATABASE}',
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  data:
