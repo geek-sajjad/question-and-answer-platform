@@ -11,9 +11,11 @@ import {
 import { QuestionService } from './question.service';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { Question } from './entities/question.entity';
-import { PaginationQueryDto } from '../../shared/dto/pagination-query.dto';
+// import { PaginationQueryDto } from '../../shared/dto/pagination-query.dto';
 import { AnswerService } from '../answer/answer.service';
 import { MakeAnswerDto } from './dto/make-answer.dto';
+import { FilterQuestionsDto } from './dto/get-questions.dto';
+import { PaginatedResponse } from '../../shared/interfaces/pagination.interface';
 
 @Controller('questions')
 export class QuestionController {
@@ -31,8 +33,22 @@ export class QuestionController {
   }
 
   @Get()
-  async findAll(@Query() pagination: PaginationQueryDto) {
-    return this.questionService.findAll(pagination);
+  async findAll(
+    @Query() dto: FilterQuestionsDto,
+  ): Promise<PaginatedResponse<Question>> {
+    const { limit, page, tags } = dto;
+    if (tags != undefined) {
+      console.log(dto);
+      return this.questionService.findAllByTags(
+        {
+          limit,
+          page,
+        },
+
+        tags,
+      );
+    }
+    return this.questionService.findAll({ limit, page });
   }
 
   @Get(':id')

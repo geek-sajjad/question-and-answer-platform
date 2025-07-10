@@ -64,6 +64,31 @@ export class QuestionService {
     return { data, meta };
   }
 
+  async findAllByTags(
+    pagination: PaginationQueryDto,
+    tags: string,
+  ): Promise<PaginatedResponse<Question>> {
+    const { page, limit } = pagination;
+
+    const { safePage, safeLimit, skip } = getPaginationParams(page, limit);
+
+    const [data, totalItems] =
+      await this.questionRepository.findAllByTagsAndCount(
+        tags,
+        skip,
+        safeLimit,
+      );
+
+    const meta = createPaginationMeta(
+      totalItems,
+      safePage,
+      safeLimit,
+      data.length,
+    );
+
+    return { data, meta };
+  }
+
   async findOne(id: string): Promise<Question | null> {
     return this.questionRepository.findOne({
       where: { id },
