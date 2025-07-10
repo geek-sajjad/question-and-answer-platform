@@ -1,8 +1,14 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CustomerModule } from './customer/customer.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { Customer } from './customer/customer.entity';
+import { TagModule } from './modules/tag/tag.module';
+import { QuestionModule } from './modules/question/question.module';
+import { Question } from './modules/question/entities/question.entity';
+import { Answer } from './modules/answer/entities/answer.entity';
+import { Tag } from './modules/tag/entities/tag.entity';
+import { Vote } from './modules/vote/entities/vote.entity';
+import { VoteModule } from './modules/vote/vote.module';
+import { AnswerModule } from './modules/answer/answer.module';
 
 @Module({
   imports: [
@@ -19,12 +25,15 @@ import { Customer } from './customer/customer.entity';
         username: configService.get<string>('DB_USERNAME', 'postgres'),
         password: configService.get<string>('DB_PASSWORD', 'postgres'),
         database: configService.get<string>('DB_DATABASE', 'crud'),
-        entities: [Customer],
+        entities: [Question, Answer, Tag, Vote],
         synchronize: false,
       }),
       inject: [ConfigService],
     }),
-    CustomerModule,
+    TagModule,
+    QuestionModule,
+    VoteModule,
+    AnswerModule,
   ],
 })
 export class AppModule {}

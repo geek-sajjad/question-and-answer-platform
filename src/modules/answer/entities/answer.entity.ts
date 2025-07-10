@@ -8,7 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Question } from '../../question/entities/question.entity';
-import { Vote } from '../vote.entity';
+import { Vote } from '../../vote/entities/vote.entity';
 
 @Entity()
 export class Answer {

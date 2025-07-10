@@ -29,4 +29,8 @@ export class AnswerService {
     });
     return this.answerRepository.save(answer);
   }
+
+  async findOne(id: string) {
+    return this.answerRepository.findOne({ where: { id } });
+  }
 }

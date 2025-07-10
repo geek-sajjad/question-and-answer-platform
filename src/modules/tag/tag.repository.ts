@@ -6,7 +6,6 @@ import { BaseRepository } from '../../shared/base/base.repository';
 import { In, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
-// @CustomRepository(Tag)
 @Injectable()
 export class TagRepository extends BaseRepository<Tag> {
   constructor(@InjectRepository(Tag) repo: Repository<Tag>) {

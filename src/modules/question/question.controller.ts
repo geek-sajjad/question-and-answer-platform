@@ -6,8 +6,6 @@ import {
   Param,
   Query,
   NotFoundException,
-  forwardRef,
-  Inject,
   ParseUUIDPipe,
 } from '@nestjs/common';
 import { QuestionService } from './question.service';
@@ -15,8 +13,6 @@ import { CreateQuestionDto } from './dto/create-question.dto';
 import { Question } from './entities/question.entity';
 import { PaginationQueryDto } from '../../shared/dto/pagination-query.dto';
 import { AnswerService } from '../answer/answer.service';
-import { CreateAnswerDto } from '../answer/dto/create-answer.dto';
-import { IsUUID } from 'class-validator';
 import { MakeAnswerDto } from './dto/make-answer.dto';
 
 @Controller('questions')
