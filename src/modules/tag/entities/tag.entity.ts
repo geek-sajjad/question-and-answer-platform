@@ -2,11 +2,9 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Question } from '../../question/entities/question.entity';
 
 @Entity()
 export class Tag {
