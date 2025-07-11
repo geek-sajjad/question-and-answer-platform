@@ -3,6 +3,7 @@ import { BaseRepository } from '../../shared/base/base.repository';
 import { Question } from './entities/question.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { QuestionWithStats } from './interfaces/question.interface';
 // import { PaginationQueryDto } from '../../shared/dto/pagination-query.dto';
 // import { getPaginationParams } from '../../shared/utils/pagination.util';
 
@@ -31,6 +32,32 @@ export class QuestionRepository extends BaseRepository<Question> {
       .take(limit);
 
     return qb.getManyAndCount();
+  }
+
+  async getOneWithVotesStatistics(
+    id: string,
+  ): Promise<QuestionWithStats | null> {
+    const question = (await this.createQueryBuilder('question')
+      .leftJoinAndSelect('question.tags', 'tag')
+      .leftJoinAndSelect('question.answers', 'answer')
+      .leftJoinAndSelect('answer.user', 'answerUser')
+      .leftJoinAndSelect('question.user', 'questionUser')
+      .loadRelationCountAndMap(
+        'answer.upvoteCount',
+        'answer.votes',
+        'upvotes',
+        (qb) => qb.where('upvotes.voteType = :up', { up: 'UPVOTE' }),
+      )
+      .loadRelationCountAndMap(
+        'answer.downvoteCount',
+        'answer.votes',
+        'downvotes',
+        (qb) => qb.where('downvotes.voteType = :down', { down: 'DOWNVOTE' }),
+      )
+      .where('question.id = :id', { id })
+      .getOne()) as QuestionWithStats;
+    console.log(question);
+    return question;
   }
 
   getStatistics(questionId: string): Promise<

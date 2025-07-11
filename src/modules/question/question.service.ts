@@ -13,6 +13,7 @@ import {
 import { PaginatedResponse } from '../../shared/interfaces/pagination.interface';
 import { PaginationQueryDto } from '../../shared/dto/pagination-query.dto';
 import { UserService } from '../user/user.services';
+import { QuestionWithStats } from './interfaces/question.interface';
 
 @Injectable()
 export class QuestionService {
@@ -98,11 +99,8 @@ export class QuestionService {
     return { data, meta };
   }
 
-  async findOne(id: string): Promise<Question | null> {
-    return this.questionRepository.findOne({
-      where: { id },
-      relations: ['tags', 'answers', 'answers.user', 'user'],
-    });
+  async findOne(id: string): Promise<QuestionWithStats | null> {
+    return this.questionRepository.getOneWithVotesStatistics(id);
   }
 
   async statistics(qId: string) {
