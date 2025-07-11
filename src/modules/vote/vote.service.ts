@@ -36,10 +36,24 @@ export class VoteService {
         'userId not found, please create user first',
       );
     }
+    const existingVote = await this.voteRepository.findOne({
+      where: {
+        user: {
+          id: userId,
+        },
+        answer: {
+          id: answerId,
+        },
+      },
+    });
 
+    if (existingVote) {
+      throw new BadRequestException('You already have voted on this');
+    }
     const vote = this.voteRepository.create({
       voteType: voteType,
       answer,
+      user,
     });
     return this.voteRepository.save(vote);
   }

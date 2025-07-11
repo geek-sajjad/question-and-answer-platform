@@ -46,7 +46,10 @@ export class AnswerService {
   }
 
   async findOne(id: string) {
-    return this.answerRepository.findOne({ where: { id } });
+    return this.answerRepository.findOne({
+      where: { id },
+      relations: ['user'],
+    });
   }
 
   async markAnswerCorrect(dto: MarkAnswerCorrectDto) {
