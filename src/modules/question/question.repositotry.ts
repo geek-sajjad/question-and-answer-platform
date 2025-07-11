@@ -32,4 +32,21 @@ export class QuestionRepository extends BaseRepository<Question> {
 
     return qb.getManyAndCount();
   }
+
+  getStatistics(questionId: string): Promise<
+    {
+      id: string;
+      total_answers: number;
+    }[]
+  > {
+    return (
+      this.createQueryBuilder('question')
+        .select('question.id, count(question.id) as total_answers')
+        // .select('*')
+        .innerJoin('question.answers', 'answer')
+        .where('question.id = :questionId', { questionId })
+        .groupBy('question.id')
+        .execute()
+    );
+  }
 }

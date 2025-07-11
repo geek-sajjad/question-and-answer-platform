@@ -41,6 +41,7 @@ export class AnswerService {
     const answer = this.answerRepository.create({
       content: content,
       question,
+      user,
     });
     return this.answerRepository.save(answer);
   }

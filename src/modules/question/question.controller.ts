@@ -63,6 +63,15 @@ export class QuestionController {
     return question;
   }
 
+  @Get(':id/statistics')
+  async statistics(@Param('id', new ParseUUIDPipe()) id: string) {
+    const question = await this.questionService.findOne(id);
+    if (!question) {
+      throw new NotFoundException(`Question with ID ${id} not found`);
+    }
+    return this.questionService.statistics(id);
+  }
+
   @Post(':id/make-answer')
   async makeAnswer(
     @Param('id', new ParseUUIDPipe()) id: string,

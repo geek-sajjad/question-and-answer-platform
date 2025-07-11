@@ -104,4 +104,16 @@ export class QuestionService {
       relations: ['tags', 'answers', 'answers.user', 'user'],
     });
   }
+
+  async statistics(qId: string) {
+    const statistics = await this.questionRepository.getStatistics(qId);
+    let totalAnswers = 0;
+    if (statistics.length > 0) {
+      totalAnswers = statistics[0].total_answers;
+    }
+    return {
+      totalAnswers: totalAnswers,
+      questionId: qId,
+    };
+  }
 }
