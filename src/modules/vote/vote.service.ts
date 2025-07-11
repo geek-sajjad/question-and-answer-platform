@@ -1,8 +1,13 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 // import { QuestionService } from '../question/question.service';
 import { VoteRepository } from './vote.repository';
 import { CreateVoteDto } from './dto/create-vote.dto';
 import { AnswerService } from '../answer/answer.service';
+import { UserService } from '../user/user.services';
 
 @Injectable()
 export class VoteService {
@@ -10,14 +15,26 @@ export class VoteService {
     private readonly voteRepository: VoteRepository,
     // @Inject(forwardRef(() => QuestionService))
     private readonly answerService: AnswerService,
+    private readonly userService: UserService,
   ) {}
 
   async createVote(createVoteDto: CreateVoteDto) {
-    const { voteType, answerId } = createVoteDto;
+    const { voteType, answerId, userId } = createVoteDto;
     const answer = await this.answerService.findOne(answerId);
 
     if (!answer) {
       throw new NotFoundException(`Answer with ID ${answerId} not found`);
+    }
+
+    if (answer.user.id === userId) {
+      throw new BadRequestException('You cannot vote your own answer');
+    }
+
+    const user = await this.userService.findOneById(userId);
+    if (!user) {
+      throw new BadRequestException(
+        'userId not found, please create user first',
+      );
     }
 
     const vote = this.voteRepository.create({

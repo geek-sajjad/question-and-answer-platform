@@ -11,4 +11,9 @@ export class CreateVoteDto {
   @IsString()
   @IsNotEmpty()
   voteType: VoteType;
+
+  @IsString()
+  @IsUUID()
+  @IsNotEmpty()
+  userId: string;
 }

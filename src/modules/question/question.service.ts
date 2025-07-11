@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 // import { InjectRepository } from '@nestjs/typeorm';
 // import { Repository } from 'typeorm';
 import { Question } from './entities/question.entity';
@@ -12,12 +12,14 @@ import {
 } from '../../shared/utils/pagination.util';
 import { PaginatedResponse } from '../../shared/interfaces/pagination.interface';
 import { PaginationQueryDto } from '../../shared/dto/pagination-query.dto';
+import { UserService } from '../user/user.services';
 
 @Injectable()
 export class QuestionService {
   constructor(
     private readonly questionRepository: QuestionRepository,
     private readonly tagRepository: TagRepository,
+    private readonly userService: UserService,
   ) {
     // @InjectRepository(Question)
     // private questionRepository: Repository<Question>,
@@ -26,8 +28,14 @@ export class QuestionService {
   }
 
   async create(createQuestionDto: CreateQuestionDto): Promise<Question> {
-    const { title, description, tagIds } = createQuestionDto;
+    const { title, description, tagIds, userId } = createQuestionDto;
 
+    const user = await this.userService.findOneById(userId);
+    if (!user) {
+      throw new BadRequestException(
+        'userId not found, please create user first',
+      );
+    }
     // Find tags by IDs
     const tags = tagIds ? await this.tagRepository.findByIds(tagIds) : [];
 
@@ -35,6 +43,7 @@ export class QuestionService {
       title,
       description,
       tags,
+      user,
     });
 
     return this.questionRepository.save(question);
@@ -92,7 +101,7 @@ export class QuestionService {
   async findOne(id: string): Promise<Question | null> {
     return this.questionRepository.findOne({
       where: { id },
-      relations: ['tags', 'answers'],
+      relations: ['tags', 'answers', 'answers.user', 'user'],
     });
   }
 }

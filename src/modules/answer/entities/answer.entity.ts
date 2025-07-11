@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { Question } from '../../question/entities/question.entity';
 import { Vote } from '../../vote/entities/vote.entity';
+import { User } from '../../user/entities/user.entity';
 
 @Entity()
 export class Answer {
@@ -18,8 +19,8 @@ export class Answer {
   @Column('text')
   content: string;
 
-  // @ManyToOne(() => User, (user) => user.answers)
-  // user: User;
+  @ManyToOne(() => User, (user) => user.answers)
+  user: User;
 
   @ManyToOne(() => Question, (question) => question.answers)
   question: Question;

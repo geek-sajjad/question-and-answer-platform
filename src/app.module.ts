@@ -9,6 +9,8 @@ import { Tag } from './modules/tag/entities/tag.entity';
 import { Vote } from './modules/vote/entities/vote.entity';
 import { VoteModule } from './modules/vote/vote.module';
 import { AnswerModule } from './modules/answer/answer.module';
+import { UserModule } from './modules/user/user.module';
+import { User } from './modules/user/entities/user.entity';
 
 @Module({
   imports: [
@@ -25,7 +27,7 @@ import { AnswerModule } from './modules/answer/answer.module';
         username: configService.get<string>('DB_USERNAME', 'postgres'),
         password: configService.get<string>('DB_PASSWORD', 'postgres'),
         database: configService.get<string>('DB_DATABASE', 'crud'),
-        entities: [Question, Answer, Tag, Vote],
+        entities: [Question, Answer, Tag, Vote, User],
         synchronize: false,
       }),
       inject: [ConfigService],
@@ -34,6 +36,7 @@ import { AnswerModule } from './modules/answer/answer.module';
     QuestionModule,
     VoteModule,
     AnswerModule,
+    UserModule,
   ],
 })
 export class AppModule {}

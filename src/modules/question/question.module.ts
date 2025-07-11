@@ -6,11 +6,12 @@ import { Question } from './entities/question.entity';
 import { QuestionRepository } from './question.repositotry';
 import { TagModule } from '../tag/tag.module';
 import { AnswerModule } from '../answer/answer.module';
+import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [
     forwardRef(() => AnswerModule),
-
+    UserModule,
     TagModule,
     TypeOrmModule.forFeature([Question]),
   ],

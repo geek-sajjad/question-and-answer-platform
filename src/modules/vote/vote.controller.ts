@@ -9,10 +9,11 @@ export class VoteController {
   @HttpCode(200)
   @Post()
   async makeVote(@Body() dto: CreateVoteDto): Promise<void> {
-    const { answerId, voteType } = dto;
+    const { answerId, voteType, userId } = dto;
     await this.voteService.createVote({
       answerId: answerId,
       voteType: voteType,
+      userId,
     });
   }
 }

@@ -1,9 +1,10 @@
 import { IsString, IsNotEmpty, IsUUID } from 'class-validator';
 
-export class MakeAnswerDto {
+export class MarkAnswerCorrectDto {
   @IsString()
+  @IsUUID()
   @IsNotEmpty()
-  content: string;
+  answerId: string;
 
   @IsString()
   @IsUUID()

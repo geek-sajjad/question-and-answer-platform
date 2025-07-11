@@ -16,6 +16,7 @@ import { AnswerService } from '../answer/answer.service';
 import { MakeAnswerDto } from './dto/make-answer.dto';
 import { FilterQuestionsDto } from './dto/get-questions.dto';
 import { PaginatedResponse } from '../../shared/interfaces/pagination.interface';
+import { MarkAnswerCorrectDto } from './dto/mark-answer-correct.dto';
 
 @Controller('questions')
 export class QuestionController {
@@ -70,8 +71,26 @@ export class QuestionController {
     await this.answerService.createAnswer({
       content: dto.content,
       questionId: id,
+      userId: dto.userId,
     });
 
     return this.findOne(id);
+  }
+
+  @Post(':id/mark-answer-correct')
+  async mareAnswerCorrect(
+    @Param('id', new ParseUUIDPipe()) questionId: string,
+    @Body() dto: MarkAnswerCorrectDto,
+  ) {
+    console.log('questionId', questionId);
+    await this.answerService.markAnswerCorrect({
+      answerId: dto.answerId,
+      userId: dto.userId,
+      questionId,
+    });
+    return {
+      status: 200,
+      message: 'the answer marked as correct',
+    };
   }
 }

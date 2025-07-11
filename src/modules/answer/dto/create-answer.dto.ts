@@ -8,4 +8,9 @@ export class CreateAnswerDto {
   @IsUUID()
   @IsNotEmpty()
   questionId: string;
+
+  @IsString()
+  @IsUUID()
+  @IsNotEmpty()
+  userId: string;
 }

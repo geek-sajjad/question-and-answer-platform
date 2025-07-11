@@ -19,4 +19,9 @@ export class CreateQuestionDto {
   @IsUUID('all', { each: true })
   @IsOptional()
   tagIds?: string[];
+
+  @IsString()
+  @IsUUID()
+  @IsNotEmpty()
+  userId: string;
 }
