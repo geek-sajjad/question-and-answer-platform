@@ -17,7 +17,6 @@ import { MakeAnswerDto } from './dto/make-answer.dto';
 import { FilterQuestionsDto } from './dto/get-questions.dto';
 import { PaginatedResponse } from '../../shared/interfaces/pagination.interface';
 import { MarkAnswerCorrectDto } from './dto/mark-answer-correct.dto';
-
 @Controller('questions')
 export class QuestionController {
   constructor(
@@ -39,7 +38,6 @@ export class QuestionController {
   ): Promise<PaginatedResponse<Question>> {
     const { limit, page, tags } = dto;
     if (tags != undefined) {
-      console.log(dto);
       return this.questionService.findAllByTags(
         {
           limit,
@@ -91,7 +89,6 @@ export class QuestionController {
     @Param('id', new ParseUUIDPipe()) questionId: string,
     @Body() dto: MarkAnswerCorrectDto,
   ) {
-    console.log('questionId', questionId);
     await this.answerService.markAnswerCorrect({
       answerId: dto.answerId,
       userId: dto.userId,

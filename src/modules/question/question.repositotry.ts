@@ -4,8 +4,6 @@ import { Question } from './entities/question.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { QuestionWithStats } from './interfaces/question.interface';
-// import { PaginationQueryDto } from '../../shared/dto/pagination-query.dto';
-// import { getPaginationParams } from '../../shared/utils/pagination.util';
 
 @Injectable()
 export class QuestionRepository extends BaseRepository<Question> {
