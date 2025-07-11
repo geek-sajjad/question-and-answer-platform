@@ -11,6 +11,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Tag } from '../../tag/entities/tag.entity';
+import { User } from '../../user/entities/user.entity';
 
 @Entity()
 export class Question {
@@ -23,8 +24,8 @@ export class Question {
   @Column('text')
   description: string;
 
-  // @ManyToOne(() => User, (user) => user.questions)
-  // user: User;
+  @ManyToOne(() => User, (user) => user.questions)
+  user: User;
 
   @ManyToMany(() => Tag, { cascade: true })
   @JoinTable()
