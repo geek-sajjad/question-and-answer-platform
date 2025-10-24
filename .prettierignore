@@ -1,0 +1,81 @@
+# Dependencies
+node_modules/
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# Build outputs
+dist/
+build/
+coverage/
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Docker files
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Test files
+test/
+coverage/
+
+# Migration files (if you want to keep them unformatted)
+src/database/migrations/
+
+# Specific files you want to ignore
+Question-and-Answer-Platform.postman_collection.json
+
+# Config files that might have specific formatting
+*.config.js
+*.config.ts
+eslint.config.mjs
+nest-cli.json
+tsconfig*.json
+
+# Documentation files
+README.md
+*.md
+
+# Temporary files
+tmp/
+temp/

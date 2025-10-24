@@ -142,3 +142,49 @@ These migrations define the structure and changes applied to the database schema
 ## Unit test
 for running unit test, run this command:
 `npm run test`
+
+---
+
+## 🌱 Database Seeder
+
+The project includes a comprehensive database seeder that can generate realistic test data for development and testing purposes.
+
+### Quick Start
+
+```bash
+# Run with small test dataset (100 users, 50 questions, etc.)
+npm run seed:test
+
+# Run with full production dataset (500k users, 50k questions, etc.)
+npm run seed:production
+
+# Run with custom configuration
+npm run seed:custom
+```
+
+### Seeder Features
+
+- **Realistic Data**: Generates meaningful questions, answers, and user profiles
+- **Batch Processing**: Efficiently handles large datasets with configurable batch sizes
+- **Relationship Management**: Properly seeds many-to-many relationships
+- **Progress Tracking**: Real-time progress indicators during seeding
+- **Multiple Configurations**: Test, production, and custom modes
+
+### Data Volumes
+
+**Test Mode:**
+- Users: 100
+- Questions: 50
+- Answers: 150
+- Tags: 20
+- Votes: 2-5 per answer
+
+**Production Mode:**
+- Users: 500,000
+- Questions: 50,000
+- Answers: 150,000
+- Tags: 100
+- Votes: 3-10 per answer
+- Question-Tags: 1-3 per question
+
+For detailed seeder documentation, see: `src/database/seeder/README.md`
