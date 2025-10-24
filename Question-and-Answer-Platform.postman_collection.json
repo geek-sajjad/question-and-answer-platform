@@ -1,0 +1,370 @@
+{
+  "info": {
+    "name": "Question and Answer Platform API",
+    "description": "Complete API collection for the Question and Answer platform built with NestJS, TypeORM, and PostgreSQL",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api",
+      "type": "string"
+    },
+    {
+      "key": "questionId",
+      "value": "123e4567-e89b-12d3-a456-426614174000",
+      "type": "string"
+    },
+    {
+      "key": "userId",
+      "value": "123e4567-e89b-12d3-a456-426614174002",
+      "type": "string"
+    },
+    {
+      "key": "answerId",
+      "value": "123e4567-e89b-12d3-a456-426614174003",
+      "type": "string"
+    },
+    {
+      "key": "tagId",
+      "value": "123e4567-e89b-12d3-a456-426614174001",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Questions",
+      "description": "Endpoints for managing questions",
+      "item": [
+        {
+          "name": "Create Question",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"How to implement a REST API in NestJS?\",\n  \"description\": \"I need help understanding how to set up a REST API using NestJS with TypeORM.\",\n  \"tagIds\": [\"{{tagId}}\"],\n  \"userId\": \"{{userId}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/questions",
+              "host": ["{{baseUrl}}"],
+              "path": ["questions"]
+            },
+            "description": "Create a new question with title, description, optional tags, and user ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Questions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/questions?limit=10&page=1",
+              "host": ["{{baseUrl}}"],
+              "path": ["questions"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Number of questions per page"
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number"
+                }
+              ]
+            },
+            "description": "Get a paginated list of all questions"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Questions by Tags",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/questions?tags=javascript,nodejs&limit=10&page=1",
+              "host": ["{{baseUrl}}"],
+              "path": ["questions"],
+              "query": [
+                {
+                  "key": "tags",
+                  "value": "javascript,nodejs",
+                  "description": "Comma-separated list of tag names"
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Number of questions per page"
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number"
+                }
+              ]
+            },
+            "description": "Get questions filtered by specific tags"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Question by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/questions/{{questionId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["questions", "{{questionId}}"]
+            },
+            "description": "Get a single question by its UUID"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Question Statistics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/questions/{{questionId}}/statistics",
+              "host": ["{{baseUrl}}"],
+              "path": ["questions", "{{questionId}}", "statistics"]
+            },
+            "description": "Get statistics for a specific question including answer count"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Answer for Question",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"You can implement a REST API in NestJS using controllers and services. Here's a step-by-step guide...\",\n  \"userId\": \"{{userId}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/questions/{{questionId}}/make-answer",
+              "host": ["{{baseUrl}}"],
+              "path": ["questions", "{{questionId}}", "make-answer"]
+            },
+            "description": "Create an answer for a specific question"
+          },
+          "response": []
+        },
+        {
+          "name": "Mark Answer as Correct",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"answerId\": \"{{answerId}}\",\n  \"userId\": \"{{userId}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/questions/{{questionId}}/mark-answer-correct",
+              "host": ["{{baseUrl}}"],
+              "path": ["questions", "{{questionId}}", "mark-answer-correct"]
+            },
+            "description": "Mark an answer as correct for a specific question (only question owner can do this)"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "description": "Endpoints for managing users (test functionality)",
+      "item": [
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john.doe@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["users"]
+            },
+            "description": "Create a new user (test functionality)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["users"]
+            },
+            "description": "Get all users (test functionality, no pagination)"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Tags",
+      "description": "Endpoints for managing tags",
+      "item": [
+        {
+          "name": "Create Tag",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"javascript\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/tags",
+              "host": ["{{baseUrl}}"],
+              "path": ["tags"]
+            },
+            "description": "Create a new tag"
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Tags",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/tags?limit=10&page=1",
+              "host": ["{{baseUrl}}"],
+              "path": ["tags"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Number of tags per page"
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number"
+                }
+              ]
+            },
+            "description": "Get all tags with pagination"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Votes",
+      "description": "Endpoints for managing votes on answers",
+      "item": [
+        {
+          "name": "Upvote Answer",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"answerId\": \"{{answerId}}\",\n  \"voteType\": \"UPVOTE\",\n  \"userId\": \"{{userId}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/votes",
+              "host": ["{{baseUrl}}"],
+              "path": ["votes"]
+            },
+            "description": "Submit an upvote for an answer"
+          },
+          "response": []
+        },
+        {
+          "name": "Downvote Answer",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"answerId\": \"{{answerId}}\",\n  \"voteType\": \"DOWNVOTE\",\n  \"userId\": \"{{userId}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/votes",
+              "host": ["{{baseUrl}}"],
+              "path": ["votes"]
+            },
+            "description": "Submit a downvote for an answer"
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Auto-generate UUIDs if needed",
+          "if (!pm.environment.get('questionId')) {",
+          "    pm.environment.set('questionId', pm.variables.replaceIn('{{$randomUUID}}'));",
+          "}",
+          "if (!pm.environment.get('userId')) {",
+          "    pm.environment.set('userId', pm.variables.replaceIn('{{$randomUUID}}'));",
+          "}",
+          "if (!pm.environment.get('answerId')) {",
+          "    pm.environment.set('answerId', pm.variables.replaceIn('{{$randomUUID}}'));",
+          "}",
+          "if (!pm.environment.get('tagId')) {",
+          "    pm.environment.set('tagId', pm.variables.replaceIn('{{$randomUUID}}'));",
+          "}"
+        ]
+      }
+    }
+  ]
+}
