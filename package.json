@@ -27,7 +27,11 @@
     "seed": "ts-node -r tsconfig-paths/register src/database/seeder/run-seeder.ts",
     "seed:test": "ts-node -r tsconfig-paths/register src/database/seeder/run-seeder.ts test",
     "seed:production": "ts-node -r tsconfig-paths/register src/database/seeder/run-seeder.ts production",
-    "seed:custom": "ts-node -r tsconfig-paths/register src/database/seeder/run-seeder.ts custom"
+    "seed:custom": "ts-node -r tsconfig-paths/register src/database/seeder/run-seeder.ts custom",
+    "seed:original": "ts-node -r tsconfig-paths/register src/database/seeder/run-seeder.ts",
+    "seed:v2": "ts-node -r tsconfig-paths/register src/database/seeder/run-seeder.v2.ts",
+    "seed:v2:test": "ts-node -r tsconfig-paths/register src/database/seeder/run-seeder.v2.ts test",
+    "seed:compare": "ts-node -r tsconfig-paths/register src/database/seeder/compare-performance.ts"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",

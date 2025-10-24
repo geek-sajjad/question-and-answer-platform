@@ -25,6 +25,7 @@ export interface SeederConfig {
     maxPerQuestion: number;
     batchSize: number;
   };
+  enableBulkInsertTest?: boolean;
 }
 
 export const DEFAULT_SEEDER_CONFIG: SeederConfig = {
@@ -54,6 +55,7 @@ export const DEFAULT_SEEDER_CONFIG: SeederConfig = {
     maxPerQuestion: 3,
     batchSize: 1000,
   },
+  enableBulkInsertTest: false,
 };
 
 export const TEST_SEEDER_CONFIG: SeederConfig = {
@@ -83,4 +85,5 @@ export const TEST_SEEDER_CONFIG: SeederConfig = {
     maxPerQuestion: 2,
     batchSize: 100,
   },
+  enableBulkInsertTest: true,
 };

@@ -188,3 +188,8 @@ npm run seed:custom
 - Question-Tags: 1-3 per question
 
 For detailed seeder documentation, see: `src/database/seeder/README.md`
+
+
+## Todo's for researhc:
+
+finding node.js cpu intensive bottelneck from seeder when it wants to seed votes that takes so long
