@@ -11,18 +11,18 @@ import { VoteModule } from './modules/vote/vote.module';
 import { AnswerModule } from './modules/answer/answer.module';
 import { UserModule } from './modules/user/user.module';
 import { User } from './modules/user/entities/user.entity';
-import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+// import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
-    ThrottlerModule.forRoot([
-      {
-        name: 'default',
-        ttl: 60000,
-        limit: 10,
-      },
-    ]),
+    // ThrottlerModule.forRoot([
+    //   {
+    //     name: 'default',
+    //     ttl: 60000,
+    //     limit: 10,
+    //   },
+    // ]),
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env', // Path to .env file
@@ -47,11 +47,11 @@ import { APP_GUARD } from '@nestjs/core';
     AnswerModule,
     UserModule,
   ],
-  providers: [
-    {
-      provide: APP_GUARD,
-      useClass: ThrottlerGuard,
-    },
-  ],
+  // providers: [
+  //   {
+  //     provide: APP_GUARD,
+  //     useClass: ThrottlerGuard,
+  //   },
+  // ],
 })
 export class AppModule {}

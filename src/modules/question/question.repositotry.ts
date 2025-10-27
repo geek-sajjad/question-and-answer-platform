@@ -54,7 +54,7 @@ export class QuestionRepository extends BaseRepository<Question> {
       )
       .where('question.id = :id', { id })
       .getOne()) as QuestionWithStats;
-    console.log(question);
+
     return question;
   }
 
