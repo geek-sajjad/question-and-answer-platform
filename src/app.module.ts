@@ -11,6 +11,8 @@ import { VoteModule } from './modules/vote/vote.module';
 import { AnswerModule } from './modules/answer/answer.module';
 import { UserModule } from './modules/user/user.module';
 import { User } from './modules/user/entities/user.entity';
+import { CacheModule } from './modules/cache/cache.module';
+import { RedisModule } from './modules/redis/redis.module';
 // import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 
@@ -27,6 +29,8 @@ import { APP_GUARD } from '@nestjs/core';
       isGlobal: true,
       envFilePath: '.env', // Path to .env file
     }),
+    RedisModule,
+    CacheModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({

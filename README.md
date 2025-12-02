@@ -193,3 +193,10 @@ For detailed seeder documentation, see: `src/database/seeder/README.md`
 ## Todo's for researhc:
 
 finding node.js cpu intensive bottelneck from seeder when it wants to seed votes that takes so long
+
+## My notes:
+We need a caching strategy that will put the top cecent data into cache when starts up.
+so it's going to warm up cache by it's own.
+
+So the Stategy 1:
+put top relevent questions into cache when app startsup.
