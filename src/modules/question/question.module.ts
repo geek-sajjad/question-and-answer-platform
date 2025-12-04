@@ -7,6 +7,7 @@ import { QuestionRepository } from './question.repositotry';
 import { TagModule } from '../tag/tag.module';
 import { AnswerModule } from '../answer/answer.module';
 import { UserModule } from '../user/user.module';
+import { CacheModule } from '../cache';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { UserModule } from '../user/user.module';
     UserModule,
     TagModule,
     TypeOrmModule.forFeature([Question]),
+    CacheModule,
   ],
   controllers: [QuestionController],
   providers: [QuestionService, QuestionRepository],

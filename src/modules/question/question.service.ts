@@ -14,6 +14,7 @@ import { PaginatedResponse } from '../../shared/interfaces/pagination.interface'
 import { PaginationQueryDto } from '../../shared/dto/pagination-query.dto';
 import { UserService } from '../user/user.services';
 import { QuestionWithStats } from './interfaces/question.interface';
+import { CacheKeyBuilder, CacheService } from '../cache';
 
 @Injectable()
 export class QuestionService {
@@ -21,6 +22,7 @@ export class QuestionService {
     private readonly questionRepository: QuestionRepository,
     private readonly tagRepository: TagRepository,
     private readonly userService: UserService,
+    private readonly cacheService: CacheService,
   ) {
     // @InjectRepository(Question)
     // private questionRepository: Repository<Question>,
@@ -57,6 +59,20 @@ export class QuestionService {
 
     const { safePage, safeLimit, skip } = getPaginationParams(page, limit);
 
+    const cacheKey = CacheKeyBuilder.forList('questions', {
+      safePage,
+      safeLimit,
+    });
+    console.log('cacheKey', cacheKey);
+
+    const cachedQuestions =
+      await this.cacheService.get<PaginatedResponse<Question>>(cacheKey);
+
+    if (cachedQuestions) {
+      console.log('questions retruned from cache');
+      return cachedQuestions;
+    }
+
     const [data, totalItems] = await this.questionRepository.findAndCount({
       relations: ['tags', 'answers'],
       skip,
@@ -71,7 +87,14 @@ export class QuestionService {
       data.length,
     );
 
-    return { data, meta };
+    const response: PaginatedResponse<Question> = { data, meta };
+
+    await this.cacheService.set<PaginatedResponse<Question>>(
+      cacheKey,
+      response,
+    );
+
+    return response;
   }
 
   async findAllByTags(
@@ -81,6 +104,21 @@ export class QuestionService {
     const { page, limit } = pagination;
 
     const { safePage, safeLimit, skip } = getPaginationParams(page, limit);
+
+    const cacheKey = CacheKeyBuilder.forList('questions', {
+      tags,
+      safePage,
+      safeLimit,
+    });
+    console.log('cacheKey', cacheKey);
+
+    const cachedQuestions =
+      await this.cacheService.get<PaginatedResponse<Question>>(cacheKey);
+
+    if (cachedQuestions) {
+      console.log('questions by tags retruned from cache');
+      return cachedQuestions;
+    }
 
     const [data, totalItems] =
       await this.questionRepository.findAllByTagsAndCount(
@@ -96,22 +134,66 @@ export class QuestionService {
       data.length,
     );
 
-    return { data, meta };
+    const response: PaginatedResponse<Question> = { data, meta };
+
+    await this.cacheService.set<PaginatedResponse<Question>>(
+      cacheKey,
+      response,
+    );
+
+    return response;
   }
 
   async findOne(id: string): Promise<QuestionWithStats | null> {
-    return this.questionRepository.getOneWithVotesStatistics(id);
+    const cacheKey = CacheKeyBuilder.forEntity('question', id);
+    console.log('cacheKey', cacheKey);
+
+    const cachedQuestion =
+      await this.cacheService.get<QuestionWithStats | null>(cacheKey);
+
+    if (cachedQuestion) {
+      console.log('question retruned from cache');
+      return cachedQuestion;
+    }
+
+    const question =
+      await this.questionRepository.getOneWithVotesStatistics(id);
+
+    await this.cacheService.set<QuestionWithStats | null>(cacheKey, question);
+
+    return question;
   }
 
   async statistics(qId: string) {
+    const cacheKey = CacheKeyBuilder.build(['question', 'statistics', qId]);
+    console.log('cacheKey', cacheKey);
+
+    const cachedStatistics = await this.cacheService.get<{
+      totalAnswers: number;
+      questionId: string;
+    }>(cacheKey);
+
+    if (cachedStatistics) {
+      console.log('statistics retruned from cache');
+      return cachedStatistics;
+    }
+
     const statistics = await this.questionRepository.getStatistics(qId);
     let totalAnswers = 0;
     if (statistics.length > 0) {
       totalAnswers = statistics[0].total_answers;
     }
-    return {
+
+    const response = {
       totalAnswers: totalAnswers,
       questionId: qId,
     };
+
+    await this.cacheService.set<{
+      totalAnswers: number;
+      questionId: string;
+    }>(cacheKey, response);
+
+    return response;
   }
 }

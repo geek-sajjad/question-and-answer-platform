@@ -11,4 +11,3 @@ import { RedisServer } from './redis.service';
   exports: [RedisServer],
 })
 export class RedisModule {}
-

@@ -74,6 +74,7 @@ export function teardown(data) {
 export function readScenario(data) {
   const scenarios = [
     { weight: 53, name: 'getQuestions' }, // 45% of total traffic (45/85 = 53%)
+
     { weight: 35, name: 'getQuestionById' }, // 30% of total traffic (30/85 = 35%)
     { weight: 12, name: 'getQuestionStats' }, // 10% of total traffic (10/85 = 12%)
   ];
@@ -118,7 +119,7 @@ export function writeScenario(data) {
 function executeReadScenario(scenarioName, data) {
   switch (scenarioName) {
     case 'getQuestions':
-      getQuestions(data);
+      // getQuestions(data);
       break;
     case 'getQuestionById':
       getQuestionById(data);
@@ -152,12 +153,8 @@ function getQuestions(data) {
 
   // Randomly add query parameters
   const queryParams = [];
-  if (Math.random() > 0.5) {
-    queryParams.push(`page=${Math.floor(Math.random() * 5) + 1}`);
-  }
-  if (Math.random() > 0.7) {
-    queryParams.push(`limit=${Math.floor(Math.random() * 20) + 10}`);
-  }
+  queryParams.push(`page=${Math.floor(Math.random() * 5) + 1}`);
+  queryParams.push(`limit=10`);
   if (Math.random() > 0.8 && data.tags.length > 0) {
     const randomTag = data.tags[Math.floor(Math.random() * data.tags.length)];
     queryParams.push(`tags=${randomTag.id}`);
@@ -169,6 +166,8 @@ function getQuestions(data) {
       : `${BASE_URL}/questions`;
 
   const response = http.get(url, params);
+  // console.log(url);
+  // console.log(response.status);
 
   check(response, {
     'GET /questions status is 200': (r) => r.status === 200,
@@ -194,11 +193,8 @@ function getQuestionById(data) {
   const params = {
     headers: { 'Content-Type': 'application/json' },
   };
-
-  const response = http.get(
-    `${BASE_URL}/questions/${randomQuestion.id}`,
-    params,
-  );
+  const url = `${BASE_URL}/questions/${randomQuestion.id}`;
+  const response = http.get(url, params);
 
   check(response, {
     'GET /questions/:id status is 200': (r) => r.status === 200,

@@ -1,4 +1,9 @@
-import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
+import {
+  Injectable,
+  Logger,
+  OnModuleDestroy,
+  OnModuleInit,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import Redis from 'ioredis';
 import { configRedis } from './redis.config';
@@ -6,20 +11,20 @@ import { configRedis } from './redis.config';
 @Injectable()
 export class RedisServer implements OnModuleInit, OnModuleDestroy {
   private client: Redis;
+  private readonly logger: Logger = new Logger(RedisServer.name);
 
-  constructor(private readonly configService: ConfigService) {
-    this.client = configRedis(this.configService);
-  }
+  constructor(private readonly configService: ConfigService) {}
 
   onModuleInit() {
     // Connection is already established in constructor
     // You can add connection event listeners here if needed
+    this.client = configRedis(this.configService);
     this.client.on('connect', () => {
-      console.log('Redis connected');
+      this.logger.debug('Redis client is connected');
     });
 
     this.client.on('error', (err) => {
-      console.error('Redis connection error:', err);
+      this.logger.error('Redis connection error:', err);
     });
   }
 
