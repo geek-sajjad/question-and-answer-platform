@@ -20,6 +20,14 @@ import { SystemMetricsService } from './services/system-metrics.service';
       provide: APP_INTERCEPTOR,
       useClass: HttpMetricsInterceptor,
     },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: DatabaseMetricsInterceptor,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: CacheMetricsInterceptor,
+    },
   ],
   controllers: [PrometheusController],
   exports: [

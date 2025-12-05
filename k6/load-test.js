@@ -13,7 +13,7 @@ export const options = {
   scenarios: {
     read_traffic: {
       executor: 'constant-arrival-rate',
-      rate: 25, // 25 RPS for reads (45% + 30% + 10% = 85% of 30 total RPS)
+      rate: 255, // 25 RPS for reads (45% + 30% + 10% = 85% of 30 total RPS)
       timeUnit: '1s',
       duration: '5m',
       preAllocatedVUs: 200,

@@ -14,7 +14,6 @@ import { User } from './modules/user/entities/user.entity';
 import { CacheModule } from './modules/cache/cache.module';
 import { RedisModule } from './modules/redis/redis.module';
 import { PrometheusModule } from './modules/prometheus/prometheus.module';
-import { MetricsInterceptor } from './modules/prometheus/interceptors/metrics.interceptor';
 // import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 
@@ -55,10 +54,6 @@ import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
     UserModule,
   ],
   providers: [
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: MetricsInterceptor,
-    },
     // {
     //   provide: APP_GUARD,
     //   useClass: ThrottlerGuard,

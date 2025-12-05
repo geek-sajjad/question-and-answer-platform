@@ -1,0 +1,475 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 1,
+  "id": null,
+  "iteration": 1,
+  "links": [],
+  "panels": [
+    {
+      "type": "gauge",
+      "title": "CPU Usage (%)",
+      "id": 1,
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "expr": "cpu_usage_percent{app=\"question-answer-platform\"}",
+          "legendFormat": "{{instance}}",
+          "refId": "A"
+        }
+      ],
+      "gridPos": { "x": 0, "y": 0, "w": 6, "h": 6 }
+    },
+    {
+      "type": "timeseries",
+      "title": "CPU User / System (seconds)",
+      "id": 2,
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "rate(process_cpu_user_seconds_total{app=\"question-answer-platform\"}[1m])",
+          "legendFormat": "user",
+          "refId": "A"
+        },
+        {
+          "expr": "rate(process_cpu_system_seconds_total{app=\"question-answer-platform\"}[1m])",
+          "legendFormat": "system",
+          "refId": "B"
+        }
+      ],
+      "options": { "stacking": { "mode": "normal" } },
+      "gridPos": { "x": 6, "y": 0, "w": 12, "h": 6 }
+    },
+    {
+      "type": "timeseries",
+      "title": "Total CPU Seconds (rate)",
+      "id": 3,
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "rate(process_cpu_seconds_total{app=\"question-answer-platform\"}[1m])",
+          "legendFormat": "cpu_seconds_rate",
+          "refId": "A"
+        }
+      ],
+      "gridPos": { "x": 18, "y": 0, "w": 6, "h": 6 }
+    },
+    {
+      "type": "stat",
+      "title": "Process Uptime (s)",
+      "id": 4,
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "time() - process_start_time_seconds{app=\"question-answer-platform\"}",
+          "legendFormat": "uptime",
+          "refId": "A"
+        }
+      ],
+      "gridPos": { "x": 0, "y": 6, "w": 6, "h": 4 }
+    },
+    {
+      "type": "timeseries",
+      "title": "Resident Memory (RSS)",
+      "id": 5,
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "process_resident_memory_bytes{app=\"question-answer-platform\"}",
+          "legendFormat": "rss",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": { "unit": "bytes" },
+        "overrides": []
+      },
+      "gridPos": { "x": 6, "y": 6, "w": 6, "h": 4 }
+    },
+    {
+      "type": "timeseries",
+      "title": "Virtual Memory",
+      "id": 6,
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "process_virtual_memory_bytes{app=\"question-answer-platform\"}",
+          "legendFormat": "vsize",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": { "unit": "bytes" }
+      },
+      "gridPos": { "x": 12, "y": 6, "w": 6, "h": 4 }
+    },
+    {
+      "type": "timeseries",
+      "title": "Heap Used / Total",
+      "id": 7,
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "nodejs_heap_size_used_bytes{app=\"question-answer-platform\"}",
+          "legendFormat": "heap_used",
+          "refId": "A"
+        },
+        {
+          "expr": "nodejs_heap_size_total_bytes{app=\"question-answer-platform\"}",
+          "legendFormat": "heap_total",
+          "refId": "B"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": { "unit": "bytes" }
+      },
+      "gridPos": { "x": 18, "y": 6, "w": 6, "h": 4 }
+    },
+    {
+      "type": "timeseries",
+      "title": "External Memory",
+      "id": 8,
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "nodejs_external_memory_bytes{app=\"question-answer-platform\"}",
+          "legendFormat": "external",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": { "unit": "bytes" }
+      },
+      "gridPos": { "x": 0, "y": 10, "w": 6, "h": 4 }
+    },
+    {
+      "type": "timeseries",
+      "title": "Event Loop Lag (mean)",
+      "id": 9,
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "nodejs_eventloop_lag_mean_seconds{app=\"question-answer-platform\"}",
+          "legendFormat": "evtloop_mean_s",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": { "unit": "s" }
+      },
+      "gridPos": { "x": 6, "y": 10, "w": 6, "h": 4 }
+    },
+    {
+      "type": "timeseries",
+      "title": "Event Loop Lag (p50/p90/p99)",
+      "id": 10,
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "nodejs_eventloop_lag_p50_seconds{app=\"question-answer-platform\"}",
+          "legendFormat": "p50",
+          "refId": "A"
+        },
+        {
+          "expr": "nodejs_eventloop_lag_p90_seconds{app=\"question-answer-platform\"}",
+          "legendFormat": "p90",
+          "refId": "B"
+        },
+        {
+          "expr": "nodejs_eventloop_lag_p99_seconds{app=\"question-answer-platform\"}",
+          "legendFormat": "p99",
+          "refId": "C"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": { "unit": "s" }
+      },
+      "gridPos": { "x": 12, "y": 10, "w": 6, "h": 4 }
+    },
+    {
+      "type": "timeseries",
+      "title": "Event Loop Lag (max/min)",
+      "id": 11,
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "nodejs_eventloop_lag_max_seconds{app=\"question-answer-platform\"}",
+          "legendFormat": "max",
+          "refId": "A"
+        },
+        {
+          "expr": "nodejs_eventloop_lag_min_seconds{app=\"question-answer-platform\"}",
+          "legendFormat": "min",
+          "refId": "B"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": { "unit": "s" }
+      },
+      "gridPos": { "x": 18, "y": 10, "w": 6, "h": 4 }
+    },
+    {
+      "type": "stat",
+      "title": "Open File Descriptors",
+      "id": 12,
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "process_open_fds{app=\"question-answer-platform\"}",
+          "refId": "A"
+        }
+      ],
+      "gridPos": { "x": 0, "y": 14, "w": 4, "h": 4 }
+    },
+    {
+      "type": "stat",
+      "title": "Max File Descriptors",
+      "id": 13,
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "process_max_fds{app=\"question-answer-platform\"}",
+          "refId": "A"
+        }
+      ],
+      "gridPos": { "x": 4, "y": 14, "w": 4, "h": 4 }
+    },
+    {
+      "type": "stat",
+      "title": "Active Handles Total",
+      "id": 14,
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "nodejs_active_handles_total{app=\"question-answer-platform\"}",
+          "refId": "A"
+        }
+      ],
+      "gridPos": { "x": 8, "y": 14, "w": 4, "h": 4 }
+    },
+    {
+      "type": "timeseries",
+      "title": "Active Handles by Type",
+      "id": 15,
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "nodejs_active_handles{app=\"question-answer-platform\"}",
+          "legendFormat": "{{type}}",
+          "refId": "A"
+        }
+      ],
+      "gridPos": { "x": 12, "y": 14, "w": 12, "h": 6 }
+    },
+    {
+      "type": "timeseries",
+      "title": "Active Resources Total",
+      "id": 16,
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "nodejs_active_resources_total{app=\"question-answer-platform\"}",
+          "refId": "A"
+        }
+      ],
+      "gridPos": { "x": 0, "y": 18, "w": 6, "h": 4 }
+    },
+    {
+      "type": "timeseries",
+      "title": "Active Resources by Type",
+      "id": 17,
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "nodejs_active_resources{app=\"question-answer-platform\"}",
+          "legendFormat": "{{type}}",
+          "refId": "A"
+        }
+      ],
+      "gridPos": { "x": 6, "y": 18, "w": 6, "h": 4 }
+    },
+    {
+      "type": "timeseries",
+      "title": "GC Duration Rate (sum rate)",
+      "id": 18,
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "rate(nodejs_gc_duration_seconds_sum{app=\"question-answer-platform\", kind=\"minor\"}[5m])",
+          "legendFormat": "minor_sum_rate",
+          "refId": "A"
+        },
+        {
+          "expr": "rate(nodejs_gc_duration_seconds_sum{app=\"question-answer-platform\", kind=\"incremental\"}[5m])",
+          "legendFormat": "incremental_sum_rate",
+          "refId": "B"
+        },
+        {
+          "expr": "rate(nodejs_gc_duration_seconds_sum{app=\"question-answer-platform\", kind=\"major\"}[5m])",
+          "legendFormat": "major_sum_rate",
+          "refId": "C"
+        }
+      ],
+      "gridPos": { "x": 12, "y": 18, "w": 12, "h": 4 }
+    },
+    {
+      "type": "stat",
+      "title": "GC Count (5m increase)",
+      "id": 19,
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "increase(nodejs_gc_duration_seconds_count{app=\"question-answer-platform\"}[5m])",
+          "refId": "A"
+        }
+      ],
+      "gridPos": { "x": 0, "y": 22, "w": 6, "h": 4 }
+    },
+    {
+      "type": "heatmap",
+      "title": "GC Duration Histogram",
+      "id": 20,
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "nodejs_gc_duration_seconds_bucket{app=\"question-answer-platform\"}",
+          "refId": "A"
+        }
+      ],
+      "gridPos": { "x": 6, "y": 22, "w": 12, "h": 8 }
+    },
+    {
+      "type": "timeseries",
+      "title": "HTTP Request Latency (P95)",
+      "id": 21,
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{app=\"question-answer-platform\"}[5m])) by (le))",
+          "legendFormat": "p95",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "s" } },
+      "gridPos": { "x": 0, "y": 26, "w": 8, "h": 4 }
+    },
+    {
+      "type": "timeseries",
+      "title": "HTTP Request Latency (P99)",
+      "id": 22,
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket{app=\"question-answer-platform\"}[5m])) by (le))",
+          "legendFormat": "p99",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "s" } },
+      "gridPos": { "x": 8, "y": 26, "w": 8, "h": 4 }
+    },
+    {
+      "type": "timeseries",
+      "title": "Requests / sec",
+      "id": 23,
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "sum(rate(http_request_duration_seconds_count{app=\"question-answer-platform\"}[1m]))",
+          "legendFormat": "rps",
+          "refId": "A"
+        }
+      ],
+      "gridPos": { "x": 16, "y": 26, "w": 8, "h": 4 }
+    },
+    {
+      "type": "timeseries",
+      "title": "Error Rate (5m)",
+      "id": 24,
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "sum(rate(http_request_duration_seconds_count{app=\"question-answer-platform\", status_code=~\"5..\"}[5m])) / ignoring(status_code) sum(rate(http_request_duration_seconds_count{app=\"question-answer-platform\"}[5m]))",
+          "legendFormat": "error_rate",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "percent" } },
+      "gridPos": { "x": 0, "y": 30, "w": 8, "h": 4 }
+    },
+    {
+      "type": "table",
+      "title": "Node.js Version Info",
+      "id": 25,
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "nodejs_version_info{app=\"question-answer-platform\"}",
+          "refId": "A"
+        }
+      ],
+      "gridPos": { "x": 8, "y": 30, "w": 8, "h": 4 }
+    },
+    {
+      "type": "stat",
+      "title": "HTTP requests total (count)",
+      "id": 26,
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "sum(http_requests_total{app=\"question-answer-platform\"})",
+          "refId": "A"
+        }
+      ],
+      "gridPos": { "x": 16, "y": 30, "w": 8, "h": 4 }
+    }
+  ],
+  "refresh": "10s",
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": ["qa-platform", "nodejs", "application"],
+  "templating": {
+    "list": [
+      {
+        "type": "datasource",
+        "name": "datasource",
+        "query": "Prometheus",
+        "label": "Prometheus",
+        "hide": 0,
+        "refresh": 2,
+        "includeAll": false,
+        "multi": false,
+        "current": { "text": "Prometheus", "value": "Prometheus" }
+      },
+      {
+        "type": "query",
+        "name": "instance",
+        "label": "Instance",
+        "datasource": "Prometheus",
+        "query": "label_values(nodejs_heap_size_used_bytes{app=\"question-answer-platform\"}, instance)",
+        "refresh": 2,
+        "multi": true,
+        "includeAll": true,
+        "allValue": null,
+        "options": []
+      }
+    ]
+  },
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "title": "QA Platform API - NodeJS (app=question-answer-platform)",
+  "uid": "question-answer-platform-nodejs",
+  "version": 1
+}

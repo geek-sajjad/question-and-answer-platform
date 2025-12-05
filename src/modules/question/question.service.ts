@@ -15,6 +15,7 @@ import { PaginationQueryDto } from '../../shared/dto/pagination-query.dto';
 import { UserService } from '../user/user.services';
 import { QuestionWithStats } from './interfaces/question.interface';
 import { CacheKeyBuilder, CacheService } from '../cache';
+import { DatabaseOperation } from '../prometheus';
 
 @Injectable()
 export class QuestionService {
@@ -30,6 +31,7 @@ export class QuestionService {
     // private tagRepository: Repository<Tag>,
   }
 
+  @DatabaseOperation('save', 'questions')
   async create(createQuestionDto: CreateQuestionDto): Promise<Question> {
     const { title, description, tagIds, userId } = createQuestionDto;
 
@@ -52,6 +54,7 @@ export class QuestionService {
     return this.questionRepository.save(question);
   }
 
+  @DatabaseOperation('find', 'questions')
   async findAll(
     pagination: PaginationQueryDto,
   ): Promise<PaginatedResponse<Question>> {
@@ -97,6 +100,7 @@ export class QuestionService {
     return response;
   }
 
+  @DatabaseOperation('find', 'questions')
   async findAllByTags(
     pagination: PaginationQueryDto,
     tags: string,
@@ -144,6 +148,7 @@ export class QuestionService {
     return response;
   }
 
+  @DatabaseOperation('find', 'questions')
   async findOne(id: string): Promise<QuestionWithStats | null> {
     const cacheKey = CacheKeyBuilder.forEntity('question', id);
     console.log('cacheKey', cacheKey);
@@ -164,6 +169,7 @@ export class QuestionService {
     return question;
   }
 
+  @DatabaseOperation('find', 'questions')
   async statistics(qId: string) {
     const cacheKey = CacheKeyBuilder.build(['question', 'statistics', qId]);
     console.log('cacheKey', cacheKey);
