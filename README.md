@@ -189,6 +189,143 @@ npm run seed:custom
 
 For detailed seeder documentation, see: `src/database/seeder/README.md`
 
+---
+
+## 📊 Monitoring & Observability
+
+The application includes a comprehensive monitoring stack with **Prometheus** and **Grafana** for real-time metrics, observability, and performance tracking.
+
+### 🎯 What's Monitored
+
+#### Application Metrics
+- **HTTP Request Metrics**: Request rate, duration, status codes, and error rates
+- **Database Performance**: Query execution times, connection pool stats
+- **Cache Performance**: Redis hit/miss rates, operation latency
+- **System Metrics**: CPU usage, memory consumption, event loop lag
+
+#### Infrastructure Metrics
+- **PostgreSQL**: Database size, active connections, transaction rates, slow queries
+- **Redis**: Memory usage, command statistics, keyspace metrics
+- **Node.js**: Heap usage, garbage collection, active handles
+
+### 🚀 Quick Access
+
+Once the application is running with `docker compose up`, access:
+
+- **Grafana Dashboard**: [http://localhost:3001](http://localhost:3001)
+  - Username: `admin`
+  - Password: `admin`
+- **Prometheus**: [http://localhost:9090](http://localhost:9090)
+- **Application Metrics**: [http://localhost:3000/api/metrics](http://localhost:3000/api/metrics)
+
+### 📈 Pre-configured Dashboards
+
+The setup includes production-ready Grafana dashboards:
+
+#### 1. Application Performance Dashboard
+![Grafana Dashboard - Application Metrics](images/grafana-dash-1.png)
+
+This dashboard provides:
+- **HTTP Request Latency** (P95, P99): Track response times at different percentiles
+- **Requests per Second**: Monitor traffic patterns and load
+- **GC (Garbage Collection) Metrics**: 5-minute increase tracking for memory management
+- **HTTP Requests Total Count**: Cumulative request statistics
+- **CPU Usage**: Monitor application CPU consumption
+- **Process Uptime**: Track application stability
+- **Event Loop Lag**: Identify performance bottlenecks (P50/P90/P99)
+- **Memory Metrics**: 
+  - Resident Memory (RSS)
+  - Virtual Memory
+  - Heap Usage (used/total)
+  - External Memory
+- **File Descriptors**: Track open/max file descriptors
+- **Active Handles**: Monitor active Node.js handles by type
+
+#### 2. System & Infrastructure Dashboard
+![Grafana Dashboard - System Metrics](images/grafana-dash-2.png)
+
+This dashboard provides:
+- **CPU Usage %**: Real-time CPU utilization
+- **CPU User/System Time**: Detailed CPU metrics in seconds
+- **Total CPU Seconds Rate**: CPU usage trends
+- **Process Uptime**: Application availability tracking
+- **Resident/Virtual Memory**: Memory consumption patterns
+- **Heap Memory (Used/Total)**: Node.js heap monitoring
+- **External Memory**: External memory allocations
+- **Event Loop Lag**: Performance metrics at different percentiles (P50/P90/P99)
+- **Event Loop Lag (Max/Min)**: Event loop performance boundaries
+- **Open/Max File Descriptors**: System resource utilization
+- **Active Handles Total**: Connection and resource tracking
+- **Active Handles by Type**: Breakdown of active handles
+
+### 🔧 Key Features
+
+#### Automatic Instrumentation
+All HTTP requests are automatically tracked without code changes:
+```typescript
+// Metrics are collected automatically for all routes
+GET /api/questions -> Tracked ✅
+POST /api/users -> Tracked ✅
+```
+
+#### Custom Metrics Support
+Easy to add custom business metrics:
+```typescript
+@UseInterceptors(DatabaseMetricsInterceptor)
+@DatabaseOperation('find', 'questions')
+async findQuestions() {
+  // Database operations are automatically tracked
+}
+```
+
+#### Real-time Alerting Ready
+- Pre-configured with Prometheus alert rules
+- Ready for integration with Alertmanager, PagerDuty, or Slack
+
+### 📊 Metrics Available
+
+| Metric Type | Description | Example |
+|------------|-------------|---------|
+| HTTP Requests | Request rate, duration, errors | `http_requests_total`, `http_request_duration_seconds` |
+| Database | Query performance, connections | `database_query_duration_seconds`, `pg_stat_database_*` |
+| Cache | Hit/miss rates, latency | `cache_hits_total`, `redis_memory_used_bytes` |
+| System | CPU, memory, Node.js metrics | `process_cpu_usage`, `nodejs_heap_size_used_bytes` |
+
+### 🔍 Example PromQL Queries
+
+```promql
+# HTTP Request Rate (last 5 minutes)
+rate(http_requests_total[5m])
+
+# Average Response Time
+rate(http_request_duration_seconds_sum[5m]) / rate(http_request_duration_seconds_count[5m])
+
+# Cache Hit Rate
+sum(rate(cache_hits_total[5m])) / (sum(rate(cache_hits_total[5m])) + sum(rate(cache_misses_total[5m])))
+
+# Database Query P95 Latency
+histogram_quantile(0.95, rate(database_query_duration_seconds_bucket[5m]))
+```
+
+### 📚 Detailed Documentation
+
+For comprehensive monitoring documentation, see:
+- **Quick Start**: `MONITORING_SETUP.md`
+- **Prometheus Module**: `src/modules/prometheus/README.md`
+- **Dashboard Configurations**: `monitoring/grafana/dashboards/`
+
+### 🎨 Dashboard Customization
+
+All dashboards are provisioned as code and can be customized:
+```bash
+monitoring/grafana/dashboards/
+├── application-metrics.json
+├── database-metrics.json
+├── cache-metrics.json
+└── system-metrics.json
+```
+
+---
 
 ## Todo's for researhc:
 
