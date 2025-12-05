@@ -196,3 +196,5 @@ The platform provides a solid foundation for:
 *This document is designed for Product Owners and Marketing teams to understand the platform's capabilities and value proposition from a business perspective.*
 
 
+
+
